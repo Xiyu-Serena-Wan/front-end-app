@@ -23,7 +23,6 @@ function App() {
     if (formObject.id >= 0) {
       deleteById(formObject.id);
       setFormObject(blankCustomer);
-      setRefreshFlag(refreshFlag + 1);
     }
     console.log("in onDeleteClick()");
   }

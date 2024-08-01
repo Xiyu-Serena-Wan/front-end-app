@@ -1,35 +1,50 @@
 import { useEffect, useState } from "react";
 import './App.css';
-import { getAll } from './memdb';
+import { getAll, deleteById, post, put } from './memdb';
 
 function App() {
-  const iniData = { "id": -1, "name": "", "email": "", "password": "" }
+  const blankCustomer = { "id": -1, "name": "", "email": "", "password": "" }
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [customers, setCustomers] = useState([]);
-  const [formData, setFormData] = useState(iniData);
+  const [formObject, setFormObject] = useState(blankCustomer);
 
-  let mode = (formData.id >= 0) ? 'Update' : 'Add';
+  function handleChange(e) {
+    const {name, value} = e.target;
+    setFormObject({...formObject, [name]: value});
+  }
+
+  let mode = (formObject.id >= 0) ? 'Update' : 'Add';
 
   useEffect(() => { setCustomers(getAll()) }, [refreshFlag]);
 
   function onDeleteClick() {
+    if (formObject.id >= 0) {
+      deleteById(formObject.id);
+      setFormObject(blankCustomer);
+      setRefreshFlag(refreshFlag + 1);
+    }
     console.log("in onDeleteClick()");
   }
 
   function onSaveClick() {
-    console.log("in onSaveClick()");
+    if (mode === 'Add') {
+      post(formObject);
+    } else if (mode === 'Update') {
+      put(formObject.id, formObject);
+    }
+    setFormObject(blankCustomer);
   }
 
   function onCancelClick(row) {
-    setFormData(iniData);
+    setFormObject(blankCustomer);
     // console.log("in onCancelClick()");
   }
 
   const handleListClick = (row) => {
-    if (formData.id === row.id) {
-      setFormData(iniData);
+    if (formObject.id === row.id) {
+      setFormObject(blankCustomer);
     } else {
-      setFormData(row);
+      setFormObject(row);
     }
     // console.log("in handleListClick()");
   }
@@ -54,7 +69,7 @@ function App() {
                   onClick={() =>
                     handleListClick(row)
                   }
-                  className={row.id === formData.id ? 'selected' : ''}
+                  className={row.id === formObject.id ? 'selected' : ''}
                 >
                   <td>{row.name}</td>
                   <td>{row.email}</td>
@@ -72,19 +87,22 @@ function App() {
                 <tr>
                   <td className='label'>Name:</td>
                   <td>
-                    <input type='text' name='name' placeholder='Customer Name' required value={formData.name} />
+                    <input type='text' name='name' placeholder='Customer Name' 
+                    required value={formObject.name} onChange={handleChange}/>
                   </td>
                 </tr>
                 <tr>
                   <td className="label">Email:</td>
                   <td>
-                    <input type='email' name='email' placeholder='name@company.com' value={formData.email} />
+                    <input type='email' name='email' placeholder='name@company.com' 
+                    value={formObject.email} onChange={handleChange}/>
                   </td>
                 </tr>
                 <tr>
                   <td className="label">Pass:</td>
                   <td>
-                    <input type='text' name='password' placeholder='password' value={formData.password} />
+                    <input type='text' name='password' placeholder='password' 
+                    value={formObject.password} onChange={handleChange}/>
                   </td>
                 </tr>
                 <tr className='button-bar'>

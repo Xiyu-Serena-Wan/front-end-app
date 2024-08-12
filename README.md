@@ -68,3 +68,19 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+The question 
+You 8/12/2024 10:08 AM • You 8/12/2024 10:07 AM • Question:
+
+In Java, which of the following statements about the try-catch block is correct?
+
+Options:
+
+A) A try block must be followed by both a catch block and a finally block.
+
+B) Multiple catch blocks can be used with a single try block to handle different types of exceptions.
+
+C) If an exception is thrown inside a try block, the code after the catch block will not execute.
+
+D) The catch block is optional if there is a finally block present.
